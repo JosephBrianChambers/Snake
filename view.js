@@ -66,7 +66,7 @@
   
   View.prototype.start = function () {
     
-    this.timerId = setInterval(this.step.bind(this) ,200);
+    this.timerId = setInterval(this.step.bind(this) ,100);
   }
   
   View.prototype.step = function () {
@@ -75,8 +75,9 @@
     if (this.board.snake.isValidMove()) {
       this.board.moveSnake();
       this.boardRender();
+      $('span.score-value').html(this.board.score)
     } else {
-      alert("Game Over");
+      alert("Game Over!  Your Score: " + this.board.score);
       clearInterval(this.timerId);
     }
 

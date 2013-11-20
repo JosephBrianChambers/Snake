@@ -5,6 +5,7 @@
     this.grid  = this.createGrid();
     this.snake = new SnakeApp.Snake(this);
     this.apple = this.startingAppleCoord();
+    this.score = 1
     
   }
   
@@ -59,7 +60,8 @@
     if (this.snake.eatsApple(newHeadCoord)) {
       $('div.apple').removeClass('apple');
       this.apple = this.replaceApple();
-      segs.unshift(newHeadCoord);      
+      segs.unshift(newHeadCoord);
+      this.score++      
     } else {
       var oldSnakeTail = segs.pop(); 
       segs.unshift(newHeadCoord);
