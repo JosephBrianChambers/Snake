@@ -66,7 +66,7 @@
   
   View.prototype.start = function () {
     
-    this.timerId = setInterval(this.step.bind(this) ,100);
+    this.timerId = setInterval(this.step.bind(this) ,150);
   }
   
   View.prototype.step = function () {
