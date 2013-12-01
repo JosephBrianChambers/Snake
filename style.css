@@ -7,9 +7,8 @@ body {
 
 }
 
-
-
 .grid-div {
+  background-color: rgb(124, 179, 216);
   width: 510px;
   height: 511px;
   border-color: red;
@@ -21,24 +20,19 @@ body {
 }
 
 .square {
-  background-color: blue;
+/*  background-color: rgb(86, 128, 117);*/
+  border-radius: 3px;
   width: 10px;
   height: 10px;
-/*  border-radius: 10px;*/
   border-color: violet;
-/*  display: inline-block;*/
   float: left;
   border-left-width: 0px;
   border-width: 1px;
   border-color: white;
-/*  border-style: solid;*/
-/*  margin-left: -1px;*/
-
-/*  margin-bottom: -5px;*/
 }
 
 .snake0 {
-  background-color: black;
+  background-color: blue;
   border-color: rgb(0, 255, 10);
 }
 
@@ -48,24 +42,9 @@ body {
 }
 
 .apple {
+  border-radius: 6px;
   background-color: yellow;
   border-color: red;
-}
-
-#new-game-btn {
-  width: 259px;
-  height: 93px;
-  border-style: solid;
-  border-radius: 10px;
-  border-color: cyan;
-  font-size: 28px;
-  color: blue;
-  font-family: cursive;
-  margin-top: 20px;
-  background: green;
-  margin-right: auto;
-  margin-left: auto;
-  display: block;
 }
 
 .score {
@@ -75,14 +54,12 @@ body {
 }
 
 .player1-text {
-  color: white;
+  color: blue;
 }
 
 .player2-text {
   color: red;
 }
-
-
 
 .sub-test {
   font-size: 20px;
