@@ -8,8 +8,6 @@
       startingCoord = new SnakeApp.Coord(Board.ROWS/2, Board.COLS/2 - 1 + i)
       this["snake" + i] = new SnakeApp.Snake(this, startingCoord)
     }
-    this.apple = this.startingAppleCoord();
-    this.score = 1
   }
   
   Board.ROWS = 50;
@@ -62,18 +60,24 @@
   Board.prototype.moveSnake = function (i) {
     var segs = this["snake" + i].segments
     var newHeadCoord = this["snake" + i].nextHeadCoord();
-    
-    
+  
     //move logic for if snake eats an apple
     if (this["snake" + i].eatsApple(newHeadCoord)) {
+      
       this.removeApple(i)
       segs.unshift(newHeadCoord);
-      this.score++      
+      //increment score
+      $("span.player"+(i+1)+"-score").html(function (idx, oldhtml) {
+        return parseInt(oldhtml)+1 + ""
+      });
     } else {
       var oldSnakeTail = segs.pop(); 
-      // var oldSnakeTailDiv = $("div[data-row = "+oldSnakeTail.pos[0]+
-      //                        "]div[data-col = "+oldSnakeTail.pos[1]+"]")
-      // $(oldSnakeTailDiv).removeClass('snake'+i)
+      
+      if (SnakeApp.tronFlag === false) {
+        var oldSnakeTailDiv = $("div[data-row = "+oldSnakeTail.pos[0]+
+                               "]div[data-col = "+oldSnakeTail.pos[1]+"]")
+        $(oldSnakeTailDiv).removeClass('snake'+i)
+      }
       segs.unshift(newHeadCoord);
     }
                                 

@@ -69,12 +69,20 @@ body {
 }
 
 .score {
-  color: white;
-  font-size: 40px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 163px;
+  margin-top: 30px;
+  font-size: 22px;
+  text-align: center;
 }
+
+.player1-text {
+  color: white;
+}
+
+.player2-text {
+  color: red;
+}
+
+
 
 .sub-test {
   font-size: 20px;

@@ -5,6 +5,7 @@
     this.board = board;
     this.direction = "N";
     this.segments = [startingCoord];
+    this.score = 0
   };
   
   Snake.prototype.move = function (coord) {

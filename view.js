@@ -2,7 +2,6 @@
   var SnakeApp = root.SnakeApp = (root.SnakeApp || {});
   
   View = SnakeApp.View = function (element, numPlayers) {
-    // SnakeApp.numPlayers = numPlayers
     this.el = $(element);
     this.board = new SnakeApp.Board();
     this.counter = 0
@@ -104,20 +103,18 @@
   
   View.prototype.callStep = function () {
     this.counter++
+    if (this.counter === 100) {this.counter = 0}
     
-    if (this.allMovesValid()) {
-      
-      this.moveSnakes();
-      this.renderEverything();
-      //if (this.counter%5 === 0) {this.renderNewApple()} //this.renderApple();
-      this.renderNewApple
-    } else {
-      alert("Game Over!  Your Score: " + this.board.score);
-      clearInterval(this.timerId);
+    this.checkMovesValid()
+    this.moveSnakes();
+    this.renderSnakes();
+    if (SnakeApp.tronFlag === false) {
+      if (this.counter%20 === 0) {this.renderNewApple()}
     }
+    this.renderNewApple
   }
    
-  View.prototype.renderEverything = function () {
+  View.prototype.renderSnakes = function () {
     for(var i = 0; i < SnakeApp.numPlayers; i++) {
       this.renderSnake(i);
     }
@@ -129,14 +126,14 @@
     }
   }
   
-  View.prototype.allMovesValid = function (i) {
-    var allMovesValid = true
+  View.prototype.checkMovesValid = function (i) {
+    
     for(var i = 0; i < SnakeApp.numPlayers; i++) {
       if (this.board["snake" + i].isValidMove(i) === false) {
-        allMovesValid = false
+        clearInterval(this.timerId);
+        alert ("Game Over! Player "+(i+1)+" lost");
       }
     }
-    return allMovesValid
   }
 })(this);
 
