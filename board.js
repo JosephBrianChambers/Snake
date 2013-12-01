@@ -2,15 +2,18 @@
   var SnakeApp = root.SnakeApp = (root.SnakeApp || {})
   
   Board = SnakeApp.Board = function () {
+    this.numPlayers = SnakeApp.numPlayers
     this.grid  = this.createGrid();
-    this.snake = new SnakeApp.Snake(this);
+    for(var i=0; i < SnakeApp.numPlayers; i++) {
+      startingCoord = new SnakeApp.Coord(Board.ROWS/2, Board.COLS/2 - 1 + i)
+      this["snake" + i] = new SnakeApp.Snake(this, startingCoord)
+    }
     this.apple = this.startingAppleCoord();
     this.score = 1
-    
   }
   
-  Board.ROWS = 10;
-  Board.COLS = 10;
+  Board.ROWS = 50;
+  Board.COLS = 50;
   
   Board.prototype.startingAppleCoord = function () {
    return new SnakeApp.Coord(Math.floor(Math.random() * SnakeApp.Board.ROWS),
@@ -48,22 +51,29 @@
     return new SnakeApp.Coord(pos[0], pos[1]);
   }
   
- 
+  Board.prototype.removeApple = function (i) {
+    var headPos = this["snake" + i].segments[0].pos
+    var headDiv = $("div[data-row = "+headPos[0]+
+                   "]div[data-col = "+headPos[1]+"]")
+    $(headDiv).removeClass('apple')
+    
+  }
   
-  Board.prototype.moveSnake = function () {
-    console.log("in board.move snake")
-    var segs = this.snake.segments
-    var newHeadCoord = this.snake.nextHeadCoord();
+  Board.prototype.moveSnake = function (i) {
+    var segs = this["snake" + i].segments
+    var newHeadCoord = this["snake" + i].nextHeadCoord();
     
     
     //move logic for if snake eats an apple
-    if (this.snake.eatsApple(newHeadCoord)) {
-      $('div.apple').removeClass('apple');
-      this.apple = this.replaceApple();
+    if (this["snake" + i].eatsApple(newHeadCoord)) {
+      this.removeApple(i)
       segs.unshift(newHeadCoord);
       this.score++      
     } else {
       var oldSnakeTail = segs.pop(); 
+      // var oldSnakeTailDiv = $("div[data-row = "+oldSnakeTail.pos[0]+
+      //                        "]div[data-col = "+oldSnakeTail.pos[1]+"]")
+      // $(oldSnakeTailDiv).removeClass('snake'+i)
       segs.unshift(newHeadCoord);
     }
                                 

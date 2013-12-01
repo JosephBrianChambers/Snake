@@ -1,10 +1,10 @@
 (function (root) {
   var SnakeApp = root.SnakeApp = (root.SnakeApp || {});
   
-  Snake = SnakeApp.Snake = function (board) {
+  Snake = SnakeApp.Snake = function (board, startingCoord) {
     this.board = board;
     this.direction = "N";
-    this.segments = [new SnakeApp.Coord(5,5)];
+    this.segments = [startingCoord];
   };
   
   Snake.prototype.move = function (coord) {
@@ -16,13 +16,13 @@
   }
   
   Snake.prototype.eatsApple = function (headCoord) {
-    var appleCoord = this.board.apple
-    return headCoord.pos[0] === appleCoord.pos[0] &&
-           headCoord.pos[1] === appleCoord.pos[1];
+    var headDiv = $("div[data-row = "+this.segments[0].pos[0]+
+                   "]div[data-col = "+this.segments[0].pos[1]+"]")
+    return  $(headDiv).hasClass('apple');
   }
   
-  Snake.prototype.isValidMove = function () {
-    return this.eatSnake() === false && this.offBoard() === false
+  Snake.prototype.isValidMove = function (i) {
+    return this.eatSnake(i) === false && this.offBoard(i) === false
   }
   
   Snake.prototype.nextHeadCoord = function () {
@@ -32,17 +32,16 @@
                               headCoord.pos[1] + moveDelta[1])
   }
   
-  Snake.prototype.eatSnake = function () {
+  Snake.prototype.eatSnake = function (i) {
     var newHeadCoord = this.nextHeadCoord();
     
-    var div = $('div.snake').filter(function (idx, elem) {
-      return $(elem).data('row') === newHeadCoord.pos[0] &&
-             $(elem).data('col') === newHeadCoord.pos[1];
-    });
-    return $(div).hasClass('snake');
+    var div = $("div[data-row = "+newHeadCoord.pos[0]+
+               "]div[data-col = "+newHeadCoord.pos[1]+"]")    
+    var isOccupied = $(div).hasClass('snake0') || $(div).hasClass('snake1') || $(div).hasClass('snake2');
+    return isOccupied
   }
   
-  Snake.prototype.offBoard = function () {
+  Snake.prototype.offBoard = function (i) {
     var newHeadCoord = this.nextHeadCoord();
     var headRow = newHeadCoord.pos[0];
     var headCol = newHeadCoord.pos[1];

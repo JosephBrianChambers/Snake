@@ -1,30 +1,55 @@
 (function (root) {
   var SnakeApp = root.SnakeApp = (root.SnakeApp || {});
   
-  View = SnakeApp.View = function (element) {
+  View = SnakeApp.View = function (element, numPlayers) {
+    // SnakeApp.numPlayers = numPlayers
     this.el = $(element);
     this.board = new SnakeApp.Board();
+    this.counter = 0
+    
+  }
+  
+  View.prototype.renderNewApple = function () {
+    var that = this;
+    var validAppleDivs = $('div.square').filter(function (idx, elem) {
+      return $(elem).hasClass('snake') === false;
+    });
+
+    var validApplePositions = [];
+    validAppleDivs.each(function (idx,div) {
+      var row = $(div).data('row');
+      var col = $(div).data('col');
+      validApplePositions.push([row,col]);
+    });
+
+    var randomPick = Math.floor(Math.random() * validApplePositions.length);
+    var pos = validApplePositions[randomPick];
+    
+    var $appleDiv = $("div[data-row = "+pos[0]+
+                     "]div[data-col = "+pos[1]+"]")
+    
+    $appleDiv.addClass('apple')
   }
   
   View.prototype.renderApple = function () {
     var that = this;
     
-    $apple = $('div.square').filter(function (idx, elem) {
-      return $(elem).data('row') === that.board.apple.pos[0] &&
-             $(elem).data('col') === that.board.apple.pos[1];
-    });
+    var $apple = $("div[data-row = "+this.board.apple.pos[0]+
+                  "]div[data-col = "+this.board.apple.pos[1]+"]")
+    // $apple = $('div.square').filter(function (idx, elem) {
+    //   return $(elem).data('row') === that.board.apple.pos[0] &&
+    //          $(elem).data('col') === that.board.apple.pos[1];
+    // });
     $apple.addClass('apple');
     
   }
   
-  View.prototype.renderSnake = function () {
+  View.prototype.renderSnake = function (i) {
     var that = this;
-    this.board.snake.segments.forEach(function (seg) {
-      var div = $('div.square').filter(function (idx, elem) {
-        return $(elem).data('row') === seg.pos[0] &&
-               $(elem).data('col') === seg.pos[1]
-      });
-      $(div).addClass('snake');
+    this.board["snake" + i].segments.forEach(function (seg) {
+      var div = $("div[data-row = "+seg.pos[0]+
+                 "]div[data-col = "+seg.pos[1]+"]")
+      $(div).addClass('snake'+ i);
     });
   };
   
@@ -39,48 +64,79 @@
       });
     });
     this.el.html($container)
-    this.renderSnake();
-    this.renderApple();
   };
+  
+  View.keys = {
+    //player 1
+    37: "W",
+    38: "N",
+    39: "E",
+    40: "S",
+    
+    //player 2
+    65: "W",
+    87: "N",
+    68: "E",
+    83: "S"
+    //player 3
+    
+  }
   
   View.prototype.handleKeyEvent = function(keyCode) {
     
-    switch (keyCode) {
-    case 37:
-      dir = "W";
+    switch (true) {
+    case (keyCode >= 37 && keyCode <=40):
+      this.board.snake0.turn(View.keys[keyCode])
       break;
-    case 38:
-      dir = "N";
+    case (keyCode === 65 || 
+          keyCode === 87 || 
+          keyCode === 68 ||
+          keyCode === 83):
+      this.board.snake1.turn(View.keys[keyCode])
       break;
-    case 39:
-      dir = "E";
-      break;
-    case 40:
-      dir = "S"
-      break;
-    default:
-      return null
     };
-    this.board.snake.turn(dir)
   }
   
   View.prototype.start = function () {
-    
-    this.timerId = setInterval(this.step.bind(this) ,150);
+    this.boardRender();
+    this.timerId = setInterval(this.callStep.bind(this) ,75);
   }
   
-  View.prototype.step = function () {
+  View.prototype.callStep = function () {
+    this.counter++
     
-    
-    if (this.board.snake.isValidMove()) {
-      this.board.moveSnake();
-      this.boardRender();
-      $('span.score-value').html(this.board.score)
+    if (this.allMovesValid()) {
+      
+      this.moveSnakes();
+      this.renderEverything();
+      //if (this.counter%5 === 0) {this.renderNewApple()} //this.renderApple();
+      this.renderNewApple
     } else {
       alert("Game Over!  Your Score: " + this.board.score);
       clearInterval(this.timerId);
     }
-
+  }
+   
+  View.prototype.renderEverything = function () {
+    for(var i = 0; i < SnakeApp.numPlayers; i++) {
+      this.renderSnake(i);
+    }
+  }
+  
+  View.prototype.moveSnakes = function () {
+    for(var i = 0; i < SnakeApp.numPlayers; i++) {
+      this.board.moveSnake(i)
+    }
+  }
+  
+  View.prototype.allMovesValid = function (i) {
+    var allMovesValid = true
+    for(var i = 0; i < SnakeApp.numPlayers; i++) {
+      if (this.board["snake" + i].isValidMove(i) === false) {
+        allMovesValid = false
+      }
+    }
+    return allMovesValid
   }
 })(this);
 
