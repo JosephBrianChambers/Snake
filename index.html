@@ -21,7 +21,9 @@
       </div>
       
       <form id="new-game" accept-charset="utf-8">
-        <label for="game-mode">Select Game</label>
+        <div class="label-container">
+          <label class="label" for="game-mode">Select Game Mode</label><br>
+        </div>
         <select id="game-mode">
           <option value="snake" selected "snake">Classic Snake</option>
           <option value="snaketron">Snake/Tron hybrid</option>
@@ -29,7 +31,8 @@
         </selcet>
         <input type="submit" value="Start new game">
       </form>
-      
+      <div class="controls">Player 1 controls: &#8592, &#8593, &#8594, &#8595</div>
+      <div class="controls">Player 2 controls: a, w, s, d</div>
       <div class="score">
       </div>
     </div>

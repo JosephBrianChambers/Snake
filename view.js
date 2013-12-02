@@ -109,7 +109,7 @@
     this.moveSnakes();
     this.renderSnakes();
     if (SnakeApp.tronFlag === false) {
-      if (this.counter%99 === 0) {this.renderNewApple()}
+      if (this.counter%40 === 0) {this.renderNewApple()}
     }
     this.renderNewApple
   }

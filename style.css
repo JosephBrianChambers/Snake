@@ -9,26 +9,21 @@ body {
 
 .grid-div {
   background-color: rgb(124, 179, 216);
-  width: 510px;
-  height: 511px;
+  width: 500px;
+  height: 500px;
   border-color: red;
   border-radius: 10px;
   border-style: solid;
   margin: auto;
   border-left-width: 4px;
-  box-sizing: border-box;
+
 }
 
 .square {
-/*  background-color: rgb(86, 128, 117);*/
   border-radius: 3px;
   width: 10px;
   height: 10px;
-  border-color: violet;
   float: left;
-  border-left-width: 0px;
-  border-width: 1px;
-  border-color: white;
 }
 
 .snake0 {
@@ -82,4 +77,20 @@ body {
   margin-right: auto;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.label {
+  color: antiquewhite;
+}
+
+.label-container {
+  text-align: left;
+  margin-left: 10px;
+}
+
+.controls {
+  font-size: 12px;
+  text-align: left;
+  margin-left: 10px;
+  color: antiquewhite;
 }
